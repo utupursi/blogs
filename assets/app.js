@@ -8,3 +8,10 @@ import './bootstrap.js';
 import './styles/app.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+// $(document).ready(function () {
+//     $('#news_form_category').select2();
+// });
+
+document.addEventListener('turbo:load', function () {
+    $('#news_form_category').select2();
+});

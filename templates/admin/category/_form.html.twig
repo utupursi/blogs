@@ -1,0 +1,16 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+{% for field in form %}
+    {% if field.vars.name != '_token' %}
+        <div class="mb-3">
+            {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(field, {
+                'attr': field.vars.attr|merge({'class': 'form-control'})
+            }) }}
+            {{ form_errors(field) }}
+        </div>
+    {% endif %}
+{% endfor %}
+
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
