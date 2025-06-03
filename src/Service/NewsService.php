@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\News;
 use App\Form\NewsForm;
+use App\Interface\FileUploaderServiceInterface;
 use App\Interface\NewsRepositoryInterface;
 use App\Interface\NewsServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,9 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 final class NewsService implements NewsServiceInterface
 {
     public function __construct(
-        protected NewsRepositoryInterface $newsRepository,
-        protected FormFactoryInterface    $formFactory,
-        protected EntityManagerInterface  $entityManager,
+        protected NewsRepositoryInterface      $newsRepository,
+        protected FormFactoryInterface         $formFactory,
+        protected EntityManagerInterface       $entityManager,
+        protected FileUploaderServiceInterface $fileUploaderService
     )
     {
     }
@@ -32,23 +34,13 @@ final class NewsService implements NewsServiceInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();
+            $image = $form->get('image')->getData();
 
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-                try {
-                    $imageFile->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // handle exception if something happens during file upload
-                }
-
-                $news->setImage($newFilename);
+            if ($image) {
+                $fileName = $this->fileUploaderService->upload($image);
+                $news->setImage($fileName);
             }
+
             $this->newsRepository->create($news);
             return null;
         }
@@ -62,6 +54,13 @@ final class NewsService implements NewsServiceInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+
+            if ($image) {
+                $fileName = $this->fileUploaderService->upload($image);
+                $news->setImage($fileName);
+            }
+
             $this->newsRepository->update($news);
             return null;
         }

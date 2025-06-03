@@ -27,7 +27,7 @@
                 <td>
                     <a href="{{ path('admin_news_show', {'id': news.id}) }}">show</a>
                     <a href="{{ path('admin_news_edit', {'id': news.id}) }}">edit</a>
-                    <form method="post" action="{{ path('admin_category_delete', {'id': news.id}) }}"
+                    <form method="post" action="{{ path('admin_news_delete', {'id': news.id}) }}"
                           onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ news.id) }}">
                         <button id='delete-btn' class="btn">Delete</button>

@@ -25,6 +25,10 @@ final class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->findAll();
     }
 
+    public function getCategoryNews(Category $category)
+    {
+        return $category->getNews();
+    }
     public function create(Request $request): ?array
     {
         $category = new Category();

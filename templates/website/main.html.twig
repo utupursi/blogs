@@ -3,21 +3,34 @@
 {% block title %}News by Category{% endblock %}
 
 {% block body %}
-    <div class="categories-container">
+    <section class="news-categories">
         {% for category in categories %}
-            <div class="category-block">
-                <h2 class="category-title">{{ category.title }}</h2>
-                <div class="news-list">
+            <article class="category-section">
+                <header class="category-header">
+                    <h2 class="category-name">{{ category.title }}</h2>
+
+{#                    <h2 class="category-title">#}
+{#                        <a href="{{ path('category_news', { slug: category.slug }) }}">{{ category.title }}</a>#}
+{#                    </h2>#}
+                </header>
+
+                <div class="category-news-list">
                     {% for news in category.news|slice(0, 3) %}
-                        <div class="news-card">
-                            <h3 class="news-title">{{ news.title }}</h3>
-{#                            <p class="news-date">{{ news.created_at|date('M d, Y') }}</p>#}
-                            <p class="news-summary">{{ news.description }}</p>
-{#                            <a href="{{ path('news_show', {id: news.id}) }}" class="read-more">Read more →</a>#}
+                        <div class="news-item">
+                            <figure class="news-image-wrapper">
+                                <img src="{{ asset('uploads/news/images-683ea44c97482.jpg') }}" alt="{{ news.title }}"
+                                     class="news-image">
+                            </figure>
+                            <div class="news-content">
+                                <h3 class="news-headline">{{ news.title }}</h3>
+                                <p class="news-summary">{{ news.description }}</p>
+                                {# <p class="news-date">{{ news.created_at|date('M d, Y') }}</p> #}
+                                {# <a href="{{ path('news_show', { id: news.id }) }}" class="news-link">Read more →</a> #}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
-            </div>
+            </article>
         {% endfor %}
-    </div>
+    </section>
 {% endblock %}
