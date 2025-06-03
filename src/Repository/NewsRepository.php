@@ -6,14 +6,22 @@ use App\Entity\News;
 use App\Interface\NewsRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<News>
  */
 class NewsRepository extends ServiceEntityRepository implements NewsRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, protected EntityManagerInterface $entityManager)
+    public function __construct(
+        ManagerRegistry $registry,
+        protected EntityManagerInterface $entityManager,
+        protected PaginatorInterface $paginator
+    )
+
     {
         parent::__construct($registry, News::class);
     }
@@ -37,6 +45,23 @@ class NewsRepository extends ServiceEntityRepository implements NewsRepositoryIn
         $this->entityManager->remove($news);
         $this->entityManager->flush();
         return true;
+    }
+
+    public function getNewsByCategoryId(int $id,int $page): PaginationInterface
+    {
+        $news = $this->entityManager->createQueryBuilder()
+            ->select('n')
+            ->from(News::class, 'n')
+            ->leftJoin('n.category', 'c') // this joins and fetches the news
+            ->where('c.id = :id')
+            ->setParameter('id',$id )
+            ->getQuery();
+
+        return $this->paginator->paginate(
+             $news,
+             $page,
+             10 /* limit per page */
+        );
     }
 
     //    /**

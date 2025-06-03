@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Form\CategoryForm;
 use App\Interface\CategoryRepositoryInterface;
 use App\Interface\CategoryServiceInterface;
+use App\Interface\NewsRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ final class CategoryService implements CategoryServiceInterface
     public function __construct(
         protected CategoryRepositoryInterface $categoryRepository,
         protected FormFactoryInterface        $formFactory,
-        protected EntityManagerInterface      $entityManager,
+        protected NewsRepositoryInterface     $newsRepository,
     )
     {
     }
@@ -25,9 +26,9 @@ final class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->findAll();
     }
 
-    public function getCategoryNews(Category $category)
+    public function getCategoryNews(int $id,int $page)
     {
-        return $category->getNews();
+        return $this->newsRepository->getNewsByCategoryId($id,$page);
     }
     public function create(Request $request): ?array
     {

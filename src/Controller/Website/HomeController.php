@@ -5,6 +5,7 @@ namespace App\Controller\Website;
 use App\Entity\Category;
 use App\Interface\CategoryServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -20,10 +21,14 @@ final class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/category/{id}/news')]
-    public function getCategoryNews(Category $category, CategoryServiceInterface $categoryService)
+    #[Route('/home/category/{id}')]
+    public function getCategoryNews(Request $request,int $id, CategoryServiceInterface $categoryService): Response
     {
-        return ($categoryService->getCategoryNews($category));
-
+        return $this->render('website/news/index.html.twig', [
+            'paginatedNews' =>  $categoryService->getCategoryNews(
+                $id,
+                $request->query->getInt('page',1)
+            )
+        ]);
     }
 }

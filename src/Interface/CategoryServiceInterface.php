@@ -8,8 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface CategoryServiceInterface
 {
     public function getAll();
-    public function getCategoryNews(Category $category);
-
+    public function getCategoryNews(int $id,int $page);
     public function create(Request $request);
 
     public function update(Request $request, Category $category);

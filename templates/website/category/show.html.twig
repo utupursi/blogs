@@ -1,0 +1,33 @@
+{% extends 'website/base.html.twig' %}
+
+{% block title %}News Listing{% endblock %}
+
+{% block body %}
+    <div class="news-container">
+        <h1>News by Category</h1>
+
+        {% for category, newsItems in newsByCategory %}
+            <div class="category-block">
+                <h2><a href="{{ path('news_by_category', {'slug': category.slug}) }}" class="category-link">{{ category.name }}</a></h2>
+
+                <ul class="news-list">
+                    {% for news in newsItems %}
+                        <li class="news-item">
+                            <a href="{{ path('news_show', {'id': news.id}) }}">
+                                <h3>{{ news.title }}</h3>
+                                <p>{{ news.excerpt|length > 100 ? news.excerpt|slice(0, 100) ~ '...' : news.excerpt }}</p>
+                            </a>
+                            <span class="news-date">{{ news.publishedAt|date('F j, Y') }}</span>
+                        </li>
+                    {% else %}
+                        <li>No news in this category.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+
+        <div class="pagination">
+            {{ knp_pagination_render(newsPagination) }}
+        </div>
+    </div>
+{% endblock %}

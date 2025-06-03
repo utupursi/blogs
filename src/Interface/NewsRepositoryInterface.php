@@ -11,4 +11,5 @@ interface NewsRepositoryInterface
     public function update(News $news): News;
 
     public function delete(News $news): bool;
+    public function getNewsByCategoryId(int $id,int $page);
 }
