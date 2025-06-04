@@ -1,0 +1,25 @@
+{% extends 'website/base.html.twig' %}
+
+{% block title %}{{ news.title }} - News Detail{% endblock %}
+
+{% block body %}
+    <div class="news-container">
+        <article class="news-article">
+            <img src="{{ asset('uploads/news/' ~ news.image) }}" alt="{{ news.title }}" class="news-image"/>
+
+            <div class="news-meta">
+                <h1 class="news-title">{{ news.title }}</h1>
+                <p class="news-date">Published on {{ news.createdAt|date('M d, Y') }}</p>
+                <div class="news-categories">
+                    {% for item in news.category %}
+                        <span class="news-category">{{ item.title }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="news-content">
+                {{ news.content|raw }}
+            </div>
+        </article>
+    </div>
+{% endblock %}

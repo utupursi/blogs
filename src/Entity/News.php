@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 class News
@@ -17,12 +19,26 @@ class News
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Title cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Title cannot be longer than {{ limit }} characters."
+    )]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Title cannot be longer than {{ limit }} characters."
+    )]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "Content cannot be empty.")]
+    #[Assert\Length(
+        max: 2048,
+        maxMessage: "Title cannot be longer than {{ limit }} characters."
+    )]
     private ?string $content = null;
 
     #[ORM\Column]
@@ -31,7 +47,11 @@ class News
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'news')]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'news', fetch: 'EAGER')]
+    #[Assert\Count(
+        min: 1,
+        minMessage: 'At least one category is required.'
+    )]
     private Collection $category;
 
     #[ORM\Column(length: 255, nullable: true)]

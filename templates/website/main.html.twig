@@ -7,27 +7,14 @@
         {% for category in categories %}
             <article class="category-section">
                 <header class="category-header">
-                    <h2 class="category-name">{{ category.title }}</h2>
-
-{#                    <h2 class="category-title">#}
-{#                        <a href="{{ path('category_news', { slug: category.slug }) }}">{{ category.title }}</a>#}
-{#                    </h2>#}
+                    <h2 class="category-name">
+                        <a href="{{ path('category_news', { id: category.id }) }}">{{ category.title }}</a>
+                    </h2>
                 </header>
 
                 <div class="category-news-list">
-                    {% for news in category.news|slice(0, 3) %}
-                        <div class="news-item">
-                            <figure class="news-image-wrapper">
-                                <img src="{{ asset('uploads/news/1-683f506f74372.png') }}" alt="{{ news.title }}"
-                                     class="news-image">
-                            </figure>
-                            <div class="news-content">
-                                <h3 class="news-headline">{{ news.title }}</h3>
-                                <p class="news-summary">{{ news.description }}</p>
-                                {# <p class="news-date">{{ news.created_at|date('M d, Y') }}</p> #}
-                                {# <a href="{{ path('news_show', { id: news.id }) }}" class="news-link">Read more →</a> #}
-                            </div>
-                        </div>
+                    {% for news in category.news %}
+                        {{ include('website/news/news_card.html.twig') }}
                     {% endfor %}
                 </div>
             </article>

@@ -11,4 +11,6 @@ interface CategoryRepositoryInterface
     public function update(Category $category): Category;
 
     public function delete(Category $category): bool;
+
+    public function getCategoriesWithLatestNews(): array;
 }

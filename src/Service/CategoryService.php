@@ -7,9 +7,9 @@ use App\Form\CategoryForm;
 use App\Interface\CategoryRepositoryInterface;
 use App\Interface\CategoryServiceInterface;
 use App\Interface\NewsRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CategoryService implements CategoryServiceInterface
 {
@@ -17,6 +17,7 @@ final class CategoryService implements CategoryServiceInterface
         protected CategoryRepositoryInterface $categoryRepository,
         protected FormFactoryInterface        $formFactory,
         protected NewsRepositoryInterface     $newsRepository,
+        protected ValidatorInterface          $validator
     )
     {
     }
@@ -26,10 +27,39 @@ final class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->findAll();
     }
 
-    public function getCategoryNews(int $id,int $page)
+    public function getCategoriesWithLatestNews(): array
     {
-        return $this->newsRepository->getNewsByCategoryId($id,$page);
+        $categories = $this->categoryRepository->getCategoriesWithLatestNews();
+        $grouped = [];
+
+        foreach ($categories as $category) {
+            $categoryId = $category['category_id'];
+
+            if (!isset($grouped[$categoryId])) {
+                $grouped[$categoryId] = [
+                    'id' => $category['category_id'],
+                    'title' => $category['category_name'],
+                    'news' => []
+                ];
+            }
+
+            $grouped[$categoryId]['news'][] = [
+                'id' => $category['news_id'],
+                'title' => $category['title'],
+                'description' => $category['description'],
+                'image' => $category['image'],
+                'created_at' => $category['created_at']
+            ];
+        }
+
+        return $grouped;
     }
+
+    public function getCategoryNews(int $id, int $page)
+    {
+        return $this->newsRepository->getNewsByCategoryId($id, $page);
+    }
+
     public function create(Request $request): ?array
     {
         $category = new Category();

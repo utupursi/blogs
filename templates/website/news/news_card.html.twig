@@ -1,0 +1,14 @@
+<div class="news-item">
+    <figure class="news-image-wrapper">
+        <img src="{{ asset('uploads/news/' ~ news.image) }}"
+             alt="{{ news.title }}"
+             class="news-image">
+    </figure>
+    <div class="news-content">
+        <a href="{{ path('news_detail', { id: news.id }) }}" class="news-link">
+            <h3 class="news-headline">{{ news.title }}</h3>
+        </a>
+        <p class="news-summary">{{ news.description|length > 150 ? news.description|slice(0, 150) ~ '...' : news.description }}</p>
+        {#                                <p class="news-date">{{ news.created_at|date('M d, Y') }}</p> #}
+    </div>
+</div>
