@@ -57,10 +57,17 @@ class News
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'news',fetch: 'EAGER', orphanRemoval: true)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +155,36 @@ class News
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setNews($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getNews() === $this) {
+                $comment->setNews(null);
+            }
+        }
 
         return $this;
     }

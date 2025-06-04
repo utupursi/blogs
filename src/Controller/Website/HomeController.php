@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/')]
 final class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'homepage')]
+    #[Route('/home', name: 'homepage',methods: ['GET'])]
     public function index(CategoryServiceInterface $categoryService): Response
     {
         $categories = $categoryService->getCategoriesWithLatestNews();
