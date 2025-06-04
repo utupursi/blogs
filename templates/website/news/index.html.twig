@@ -1,33 +1,26 @@
 {% extends 'website/base.html.twig' %}
 
-{% block title %}Latest News{% endblock %}
+{% block title %}News{% endblock %}
 
 {% block body %}
-    <div class="news-container">
-        <h1>Latest News</h1>
-
-            <div class="category-news-list">
-
-            {% for news in paginatedNews %}
-                <div class="news-item">
-                    <figure class="news-image-wrapper">
-                        <img src="{{ asset('uploads/news/1-683f506f74372.png') }}" alt="{{ news.title }}"
-                             class="news-image">
-                    </figure>
-                    <div class="news-content">
-                        <h3 class="news-headline">{{ news.title }}</h3>
-                        <p class="news-summary">{{ news.description }}</p>
-                        {# <p class="news-date">{{ news.created_at|date('M d, Y') }}</p> #}
-                        {# <a href="{{ path('news_show', { id: news.id }) }}" class="news-link">Read more →</a> #}
-                    </div>
-                </div>
-            {% else %}
-                <li>No news available at the moment.</li>
-            {% endfor %}
+    <section class="news-categories">
+        <div class="category-section">
+            <div class="category-header">
+                <h2 class="category-name">Category news</h2>
             </div>
 
-        <div class="pagination">
-            {{ knp_pagination_render(paginatedNews,'@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+            <div class="category-news-list">
+                {% for news in paginatedNews %}
+                    {{ include('website/news/news_card.html.twig') }}
+                {% else %}
+                    <p>No news found.</p>
+                {% endfor %}
+            </div>
+
+            {# Pagination Controls #}
+            <div class="pagination" style="margin-top: 2rem; display: flex; gap: 1rem;">
+                {{ knp_pagination_render(paginatedNews,'@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+            </div>
         </div>
-    </div>
+    </section>
 {% endblock %}
