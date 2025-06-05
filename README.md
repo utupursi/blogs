@@ -54,3 +54,13 @@ php bin/console doctrine:fixtures:load
 symfony server:start
 ```
 
+7. Run command to send top 10 most commented news email manually
+```bash
+php bin/console App\Command\SendTopCommentedNews
+```
+
+##  Routing
+- /login
+- /admin/category - admin category management page
+- /admin/news - admin news management page
+- / - public interface

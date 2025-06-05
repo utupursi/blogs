@@ -1,0 +1,6 @@
+<h2>Top 10 Most Commented News</h2>
+<ul>
+    {% for news in newsList %}
+        <li><strong>{{ news.title }}</strong> - {{ news.comment_count }} comments</li>
+    {% endfor %}
+</ul>

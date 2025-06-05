@@ -21,7 +21,7 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
+    #[Route('/news', name: 'admin_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CategoryServiceInterface $categoryService): Response
     {
         $result = $categoryService->create($request);

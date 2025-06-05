@@ -38,6 +38,7 @@
 
             <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
             {{ form_end(form) }}
+            <br>
             <a href="{{ path('news_comments', { id: news.id }) }}" class="news-link">
                 <h3 class="news-headline">View comments</h3>
             </a>

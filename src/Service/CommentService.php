@@ -22,7 +22,7 @@ final class CommentService implements CommentServiceInterface
     {
     }
 
-    public function addComment(Request $request, News $news): true|FormInterface
+    public function addComment(Request $request, News $news): bool|FormInterface
     {
         $comment = new Comment();
         $comment->setNews($news);
@@ -36,5 +36,10 @@ final class CommentService implements CommentServiceInterface
         }
 
         return $form;
+    }
+
+    public function delete(Comment $comment): bool
+    {
+        return $this->commentRepository->delete($comment);
     }
 }

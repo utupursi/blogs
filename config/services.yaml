@@ -17,6 +17,7 @@ services:
     App\Service\FileUploaderService:
         arguments:
             $targetDirectory: 'uploads/news'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+parameters:
+    news_recipient_email: '%env(TOP_NEWS_RECIPIENT_EMAIL)%'
