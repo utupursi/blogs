@@ -54,9 +54,9 @@ php bin/console doctrine:fixtures:load
 symfony server:start
 ```
 
-7. Run command to send top 10 most commented news email manually
+7. Run command to send top 10 most commented news email
 ```bash
-php bin/console App\Command\SendTopCommentedNews
+php bin/console app:send-top-commented-news
 
 To run this command every Monday at 2:00 AM, add the following line to your crontab:
 0 2 * * 1 /usr/bin/php /full/path/to/project/bin/console app:send-top-commented-news >> /full/path/to/project/var/log/weekly-task.log 2>&1
