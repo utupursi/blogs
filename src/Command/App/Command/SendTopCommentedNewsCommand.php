@@ -19,7 +19,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 #[AsCommand(
-    name: 'App\Command\SendTopCommentedNews',
+    name: 'app:send-top-commented-news',
     description: 'Add a short description for your command',
 )]
 class SendTopCommentedNewsCommand extends Command
@@ -76,7 +76,7 @@ class SendTopCommentedNewsCommand extends Command
 
         $this->mailer->send($email);
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Top 10 commented news was successfully sent!');
 
         return Command::SUCCESS;
     }
