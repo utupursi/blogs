@@ -26,7 +26,7 @@ git clone https://github.com/utupursi/blogs.git
 2. Install dependencies:
 
 ```bash
-   composer install
+composer install
 ```
 
 3. Copy .env to .env.local and configure your local database and environment settings:
